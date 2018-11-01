@@ -4,6 +4,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
   private WebView webview;
   private String apiKey;
-  private ProgressBar progeressSpinner;
+  private ProgressBar progressSpinner;
   private FloatingActionButton jumpDate;
   private Calendar calendar;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     setupWebView();
     //TODO Setup service
-    //TODO Setup UI
+    setupUI();
     //TODO Setup defaults
   }
 
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
       @Override
       public void onPageFinished(WebView view, String url) {
-        progeressSpinner.setVisibility(View.INVISIBLE);
+        progressSpinner.setVisibility(View.GONE);
         //TODO Display toast with APOD item title.
       }
     });
@@ -54,6 +55,19 @@ public class MainActivity extends AppCompatActivity {
     settings.setDisplayZoomControls(false);
     settings.setUseWideViewPort(true);
     settings.setLoadWithOverviewMode(true);
+  }
+
+  private void setupUI() {
+    progressSpinner = findViewById(R.id.progress_spinner);
+    progressSpinner.setVisibility(View.GONE);
+    jumpDate = findViewById(R.id.jump_date);
+    jumpDate.setOnClickListener(new OnClickListener() {
+      //TODO Use lambda form.
+      @Override
+      public void onClick(View v) {
+        //TODO Display date picker
+      }
+    });
   }
 
 }
