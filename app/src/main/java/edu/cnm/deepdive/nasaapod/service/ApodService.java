@@ -9,5 +9,5 @@ public interface ApodService {
 
   @GET("planetary/apod")
   Call<Apod> get(@Query("api_key") String apiKey, @Query("date") String date);
-  
+
 }
