@@ -23,16 +23,16 @@ public class DateTimePickerFragment extends DialogFragment
   @Override
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     Dialog dialog;
-    Calendar defalutValue = (calendar != null) ? calendar : Calendar.getInstance();
+    Calendar defaultValue = (calendar != null) ? calendar : Calendar.getInstance();
     if (mode == Mode.DATE) {
       dialog = new DatePickerDialog(getActivity(), this,
-          defalutValue.get(Calendar.YEAR),
-          defalutValue.get(Calendar.MONTH),
-          defalutValue.get(Calendar.DAY_OF_MONTH));
+          defaultValue.get(Calendar.YEAR),
+          defaultValue.get(Calendar.MONTH),
+          defaultValue.get(Calendar.DAY_OF_MONTH));
     } else {
       dialog = new TimePickerDialog(getActivity(), this,
-          defalutValue.get(Calendar.HOUR_OF_DAY),
-          defalutValue.get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
+          defaultValue.get(Calendar.HOUR_OF_DAY),
+          defaultValue.get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
     }
     return dialog;
   }

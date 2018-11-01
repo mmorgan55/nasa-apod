@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
   private static final String CALENDAR_KEY = "calendar";
   private static final String APOD_KEY = "apod";
 
-  private WebView webview;
+  private WebView webView;
   private String apiKey;
   private ProgressBar progressSpinner;
   private FloatingActionButton jumpDate;
@@ -53,9 +52,16 @@ public class MainActivity extends AppCompatActivity {
     setupDefaults(savedInstanceState);
   }
 
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putLong(CALENDAR_KEY, calendar.getTimeInMillis());
+    outState.putParcelable(APOD_KEY, apod);
+  }
+
   private void setupWebView() {
-    webview = findViewById(R.id.web_view);
-    webview.setWebViewClient(new WebViewClient() {
+    webView = findViewById(R.id.web_view);
+    webView.setWebViewClient(new WebViewClient() {
       @Override
       public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         return false;
@@ -69,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
       }
     });
-    WebSettings settings = webview.getSettings();
+    WebSettings settings = webView.getSettings();
     settings.setJavaScriptEnabled(true);
     settings.setSupportZoom(true);
     settings.setBuiltInZoomControls(true);
@@ -102,8 +108,18 @@ public class MainActivity extends AppCompatActivity {
 
   private void setupDefaults(Bundle savedInstanceState) {
     calendar = Calendar.getInstance();
-    //TODO Check for savedInstancedState
-    new ApodTask().execute();
+    if (savedInstanceState != null) {
+      calendar
+          .setTimeInMillis(savedInstanceState.getLong(CALENDAR_KEY, calendar.getTimeInMillis()));
+
+      apod = savedInstanceState.getParcelable(APOD_KEY);
+    }
+    if(apod != null) {
+      progressSpinner.setVisibility(View.VISIBLE);
+      webView.loadUrl(apod.getUrl());
+    }else {
+      new ApodTask().execute();
+    }
   }
 
   private void pickDate() {
@@ -127,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostExecute(Apod apod) {
       MainActivity.this.apod = apod;
       //TODO Handle hdUrl.
-      webview.loadUrl(apod.getUrl());
+      webView.loadUrl(apod.getUrl());
     }
 
     @Override
